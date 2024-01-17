@@ -1,0 +1,100 @@
+# SPDX-FileCopyrightText: The terraform-provider-ipcalc Authors
+# SPDX-License-Identifier: 0BSD
+
+name: Verify Commits
+on:
+  pull_request:
+    branches: [ main ]
+jobs:
+  build:
+    name: Build Project
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v4
+      - id: setup_go
+        name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - id: lint
+        name: Lint Go Code
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest
+          skip-pkg-cache: true
+          skip-build-cache: true
+          args: --timeout=10m
+      - id: generate_docs
+        name: Generate Documentation
+        run: go generate
+      - id: verify_docs
+        name: Verify Documentation
+        run: |
+          git diff --compact-summary --exit-code || \
+            (echo "*** Unexpected differences after code generation. Run 'make docs' and commit."; exit 1)
+      - id: build
+        name: Build Provider
+        run: go build -v ./...
+        env:
+          CGO_ENABLED: 0
+  test:
+    name: Tests on ${{ matrix.os }}
+    needs: build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - macos-latest
+          - windows-latest
+          - ubuntu-latest
+    steps:
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v4
+      - id: setup_go
+        name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - id: setup_terraform
+        name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+      - id: provider_tests
+        name: Provider Tests
+        run: go test -v -cover -parallel=4 -timeout=900s ./internal/provider/...
+        env:
+          TF_ACC: "1"
+  terratest:
+    name: Terratest Tests
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkout
+        name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - id: setup_go
+        name: Set up Go
+        uses: actions/setup-go@v5
+        with:
+          go-version-file: go.mod
+          cache: true
+      - id: setup_terraform
+        name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_wrapper: false
+      - id: install
+        name: Install Provider
+        run: make install
+      - id: terratest
+        name: Run Terratest Tests
+        run: go test -parallel=4 -timeout=900s ./terratest/tests
