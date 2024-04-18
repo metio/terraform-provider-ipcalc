@@ -8,6 +8,7 @@ package provider
 import (
 	"context"
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
+	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/provider/schema"
 	"github.com/hashicorp/terraform-plugin-framework/resource"
@@ -32,8 +33,8 @@ func (p *IPCalcProvider) Metadata(_ context.Context, _ provider.MetadataRequest,
 
 func (p *IPCalcProvider) Schema(_ context.Context, _ provider.SchemaRequest, response *provider.SchemaResponse) {
 	response.Schema = schema.Schema{
-		Description:         "Provider for the ipcalc-like functionality. Requires Terraform 1.0 or later.",
-		MarkdownDescription: "Provider for the [ipcalc](https://gitlab.com/ipcalc/ipcalc)-like functionality. Requires Terraform 1.0 or later.",
+		Description:         "Provider for the ipcalc-like functionality. Requires Terraform 1.8 or later.",
+		MarkdownDescription: "Provider for the [ipcalc](https://gitlab.com/ipcalc/ipcalc)-like functionality. Requires Terraform 1.8 or later.",
 		Attributes:          map[string]schema.Attribute{},
 	}
 }
@@ -42,10 +43,14 @@ func (p *IPCalcProvider) Configure(ctx context.Context, _ provider.ConfigureRequ
 	tflog.Info(ctx, "IPCalcProvider configured")
 }
 
-func (p *IPCalcProvider) DataSources(_ context.Context) []func() datasource.DataSource {
-	return []func() datasource.DataSource{
-		NewReverseDNSDataSource,
+func (p *IPCalcProvider) Functions(_ context.Context) []func() function.Function {
+	return []func() function.Function{
+		NewReverseDnsFunction,
 	}
+}
+
+func (p *IPCalcProvider) DataSources(_ context.Context) []func() datasource.DataSource {
+	return []func() datasource.DataSource{}
 }
 
 func (p *IPCalcProvider) Resources(_ context.Context) []func() resource.Resource {

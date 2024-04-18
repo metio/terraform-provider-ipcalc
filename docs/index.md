@@ -3,12 +3,12 @@
 page_title: "ipcalc Provider"
 subcategory: ""
 description: |-
-  Provider for the ipcalc https://gitlab.com/ipcalc/ipcalc-like functionality. Requires Terraform 1.0 or later.
+  Provider for the ipcalc https://gitlab.com/ipcalc/ipcalc-like functionality. Requires Terraform 1.8 or later.
 ---
 
 # ipcalc Provider
 
-Provider for the [ipcalc](https://gitlab.com/ipcalc/ipcalc)-like functionality. Requires Terraform 1.0 or later.
+Provider for the [ipcalc](https://gitlab.com/ipcalc/ipcalc)-like functionality. Requires Terraform 1.8 or later.
 
 ## Example Usage
 

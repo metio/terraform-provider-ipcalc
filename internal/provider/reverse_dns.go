@@ -7,17 +7,9 @@ package provider
 
 import (
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework/diag"
 	"net"
 	"strings"
 )
-
-func ReverseDNSInvalidIPAddressError(ipAddress string) diag.Diagnostic {
-	return diag.NewErrorDiagnostic(
-		"Invalid IP address",
-		fmt.Sprintf("%v is not a valid IP address", ipAddress),
-	)
-}
 
 func ReverseDNSIPv4(ipAddress string) string {
 	splitted := strings.Split(ipAddress, ".")

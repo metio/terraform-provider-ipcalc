@@ -7,7 +7,6 @@ package provider_test
 
 import (
 	"context"
-	"fmt"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
@@ -26,20 +25,8 @@ func TestIPCalcProvider_Metadata(t *testing.T) {
 	assert.Equal(t, "ipcalc", response.TypeName, "TypeName")
 }
 
-func providerConfig() string {
-	return fmt.Sprintf(`
-		provider "ipcalc" {
-		}
-	`)
-}
-
 var (
 	testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServer, error){
 		"ipcalc": providerserver.NewProtocol6WithError(internal.New()),
 	}
 )
-
-type ConfigurationErrorTestCase struct {
-	Configuration string
-	ErrorRegex    string
-}

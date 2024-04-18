@@ -11,7 +11,7 @@ import (
 	"testing"
 )
 
-func TestReverseDNSDataSource(t *testing.T) {
+func TestReverseDnsFunction(t *testing.T) {
 	testCases := map[string]struct {
 		ipAddress  string
 		reverseDNS string
@@ -41,7 +41,7 @@ func TestReverseDNSDataSource(t *testing.T) {
 		t.Run(name, func(t *testing.T) {
 
 			terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-				TerraformDir: "../data-sources/ipcalc_reverse_dns",
+				TerraformDir: "../functions/reverse_dns",
 				Vars: map[string]interface{}{
 					"ip_address": testCase.ipAddress,
 				},
@@ -50,7 +50,6 @@ func TestReverseDNSDataSource(t *testing.T) {
 			defer terraform.Destroy(t, terraformOptions)
 			terraform.InitAndApplyAndIdempotent(t, terraformOptions)
 
-			assert.Equal(t, testCase.ipAddress, terraform.Output(t, terraformOptions, "ip_address"), "ip_address")
 			assert.Equal(t, testCase.reverseDNS, terraform.Output(t, terraformOptions, "reverse_dns"), "reverse_dns")
 		})
 	}
