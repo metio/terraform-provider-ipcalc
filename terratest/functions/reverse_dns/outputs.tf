@@ -1,6 +1,6 @@
 # SPDX-FileCopyrightText: The terraform-provider-ipcalc Authors
 # SPDX-License-Identifier: 0BSD
 
-data "ipcalc_reverse_dns" "reverse_dns" {
-  ip_address = var.ip_address
+output "reverse_dns" {
+  value = provider::ipcalc::reverse_dns(var.ip_address)
 }
