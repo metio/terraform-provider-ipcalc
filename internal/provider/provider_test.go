@@ -7,12 +7,13 @@ package provider_test
 
 import (
 	"context"
+	"testing"
+
 	"github.com/hashicorp/terraform-plugin-framework/provider"
 	"github.com/hashicorp/terraform-plugin-framework/providerserver"
 	"github.com/hashicorp/terraform-plugin-go/tfprotov6"
 	internal "github.com/metio/terraform-provider-ipcalc/internal/provider"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestIPCalcProvider_Metadata(t *testing.T) {
@@ -25,8 +26,6 @@ func TestIPCalcProvider_Metadata(t *testing.T) {
 	assert.Equal(t, "ipcalc", response.TypeName, "TypeName")
 }
 
-var (
-	testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServer, error){
-		"ipcalc": providerserver.NewProtocol6WithError(internal.New()),
-	}
-)
+var testAccProtoV6ProviderFactories = map[string]func() (tfprotov6.ProviderServer, error){
+	"ipcalc": providerserver.NewProtocol6WithError(internal.New()),
+}

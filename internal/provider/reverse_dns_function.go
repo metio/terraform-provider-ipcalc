@@ -8,8 +8,9 @@ package provider
 import (
 	"context"
 	"fmt"
-	"github.com/hashicorp/terraform-plugin-framework/function"
 	"net"
+
+	"github.com/hashicorp/terraform-plugin-framework/function"
 )
 
 var _ function.Function = (*ReverseDnsFunction)(nil)

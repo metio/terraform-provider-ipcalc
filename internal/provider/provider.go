@@ -7,6 +7,7 @@ package provider
 
 import (
 	"context"
+
 	"github.com/hashicorp/terraform-plugin-framework/datasource"
 	"github.com/hashicorp/terraform-plugin-framework/function"
 	"github.com/hashicorp/terraform-plugin-framework/provider"
@@ -15,9 +16,7 @@ import (
 	"github.com/hashicorp/terraform-plugin-log/tflog"
 )
 
-var (
-	_ provider.Provider = (*IPCalcProvider)(nil)
-)
+var _ provider.Provider = (*IPCalcProvider)(nil)
 
 type IPCalcProvider struct{}
 

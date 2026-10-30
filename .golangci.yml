@@ -1,5 +1,0 @@
-# SPDX-FileCopyrightText: The terraform-provider-ipcalc Authors
-# SPDX-License-Identifier: 0BSD
-
-run:
-  timeout: 5m

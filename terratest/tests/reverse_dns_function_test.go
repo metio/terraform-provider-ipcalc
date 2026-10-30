@@ -6,9 +6,10 @@
 package acceptance_test
 
 import (
+	"testing"
+
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
-	"testing"
 )
 
 func TestReverseDnsFunction(t *testing.T) {
@@ -39,7 +40,6 @@ func TestReverseDnsFunction(t *testing.T) {
 	}
 	for name, testCase := range testCases {
 		t.Run(name, func(t *testing.T) {
-
 			terraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 				TerraformDir: "../functions/reverse_dns",
 				Vars: map[string]interface{}{
@@ -47,10 +47,10 @@ func TestReverseDnsFunction(t *testing.T) {
 				},
 			})
 
-			defer terraform.Destroy(t, terraformOptions)
-			terraform.InitAndApplyAndIdempotent(t, terraformOptions)
+			defer terraform.DestroyContext(t, t.Context(), terraformOptions)
+			terraform.InitAndApplyAndIdempotentContext(t, t.Context(), terraformOptions)
 
-			assert.Equal(t, testCase.reverseDNS, terraform.Output(t, terraformOptions, "reverse_dns"), "reverse_dns")
+			assert.Equal(t, testCase.reverseDNS, terraform.OutputContext(t, t.Context(), terraformOptions, "reverse_dns"), "reverse_dns")
 		})
 	}
 }
