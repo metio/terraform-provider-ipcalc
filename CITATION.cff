@@ -12,9 +12,10 @@ authors:
 url: https://registry.terraform.io/providers/metio/ipcalc/
 license: 0BSD
 keywords:
-  - DNS
-  - IP
+  - dns
   - go
+  - ip
+  - ipcalc
   - make
   - terraform
   - terraform-provider
