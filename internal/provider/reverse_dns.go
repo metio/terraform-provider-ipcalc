@@ -8,14 +8,15 @@ package provider
 import (
 	"fmt"
 	"net"
+	"slices"
 	"strings"
 )
 
 func ReverseDNSIPv4(ipAddress string) string {
 	splitted := strings.Split(ipAddress, ".")
 	parts := make([]string, 0)
-	for i := len(splitted) - 1; i >= 0; i-- {
-		parts = append(parts, splitted[i])
+	for _, s := range slices.Backward(splitted) {
+		parts = append(parts, s)
 	}
 	joined := strings.Join(parts, ".")
 
@@ -26,8 +27,8 @@ func ReverseDNSIPv6(ipAddress net.IP) string {
 	expandedAddress := expandIPv6Address(ipAddress)
 	splitted := strings.Split(strings.ReplaceAll(expandedAddress, ":", ""), "")
 	parts := make([]string, 0)
-	for i := len(splitted) - 1; i >= 0; i-- {
-		parts = append(parts, splitted[i])
+	for _, s := range slices.Backward(splitted) {
+		parts = append(parts, s)
 	}
 	joined := strings.Join(parts, ".")
 
